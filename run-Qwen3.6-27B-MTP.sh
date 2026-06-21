@@ -1,0 +1,21 @@
+#!/bin/bash
+/root/llama.cpp/build/bin/llama-server \
+  -m /models/Models/unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-UD-Q4_K_XL.gguf \
+  --n-gpu-layers 999 \
+  --tensor-split 1,2 \
+  --flash-attn on \
+  -c 81920 \
+  -b 4096 \
+  -ub 512 \
+  -np 1 \
+  --jinja \
+  --host 0.0.0.0 \
+  --port 8080 \
+  --swa-full \
+  --cache-type-k q4_0 \
+  --cache-type-v q4_0 \
+  --spec-type draft-mtp \
+  --spec-draft-n-max 3 \
+  --spec-draft-n-min 0 \
+  --spec-draft-p-min 0.75 \
+  --reasoning-budget 4096 \
