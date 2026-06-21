@@ -1,0 +1,1 @@
+./run-Qwen3.6-35B-A3B-MTP-heretic.sh 2>&1 | tee ~/35b-server.log

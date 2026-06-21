@@ -1,0 +1,1 @@
+grep -E "draft acceptance|slot print_timing|SWA|hybrid|recurrent|spill|offload" ~/35b-server.log | tail -20

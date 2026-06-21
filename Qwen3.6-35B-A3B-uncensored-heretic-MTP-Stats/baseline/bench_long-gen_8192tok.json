@@ -1,0 +1,21 @@
+{
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 47,
+    "prompt_ms": 153.068,
+    "prompt_per_token_ms": 3.2567659574468086,
+    "prompt_per_second": 307.053074450571,
+    "predicted_n": 6283,
+    "predicted_ms": 55987.253,
+    "predicted_per_token_ms": 8.910910870603214,
+    "predicted_per_second": 112.22197309805503
+  },
+  "usage": {
+    "completion_tokens": 6283,
+    "prompt_tokens": 47,
+    "total_tokens": 6330,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  }
+}
