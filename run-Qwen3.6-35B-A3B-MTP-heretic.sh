@@ -17,4 +17,7 @@
   --spec-draft-n-max 3 \
   --spec-draft-n-min 0 \
   --spec-draft-p-min 0.75 \
-  --reasoning-budget 4096
+  --reasoning-budget 4096 \
+  # --mmproj /models/Models/llmfan46/Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-GGUF/Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-mmproj-BF16.gguf \
+  # --no-mmproj-offload \
+  # --image-min-tokens 1024 \
