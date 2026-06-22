@@ -18,3 +18,6 @@
   --spec-draft-n-min 0 \
   --spec-draft-p-min 0.75 \
   --reasoning-budget 4096 \
+  # Toggle for vision/multimodal 
+  # --mmproj /models/Models/llmfan46/Qwen3.6-27B-uncensored-heretic-v2-Native-MTP-Preserved-GGUF/Qwen3.6-27B-mmproj-BF16.gguf \
+  # --no-mmproj-offload \
