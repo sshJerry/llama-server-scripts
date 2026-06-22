@@ -4,11 +4,13 @@ Bash scripts for running `llama-server` from llama.cpp, tuned for split-GPU setu
 
 ## Hardware
 
-All scripts in this repo were tuned on the same two-GPU rig:
+All scripts in this repo were tuned on the same two-GPU rig, running llama.cpp inside an LXC container on Proxmox:
 
-- NVIDIA RTX 3060 Ti (8 GiB, CUDA 0)
-- NVIDIA RTX 5060 Ti (16 GiB, CUDA 1)
-- 40 GB system RAM
+- NVIDIA RTX 3060 Ti (8 GiB, CUDA 0, compute 8.6) — PCIe 3.0 x4 (via chipset, PCI_E3)
+- NVIDIA RTX 5060 Ti (16 GiB, CUDA 1, compute 12.0) — PCIe 5.0 x16 (via CPU, PCI_E1)
+- 40 GB system RAM (48 GB DDR4 3600 MHz total on the Proxmox host)
+- Debian 13 (trixie), NVIDIA driver 595.84, CUDA 13.2
+- llama.cpp build 9733, GNU 14.2.0
 
 The recurring problem this repo solves: fitting large models with long context windows into 24 GiB of total VRAM split across two cards of unequal size, while keeping generation speed usable. The notes under each script explain the flag choices that made that work.
 
@@ -160,6 +162,83 @@ The baseline 35B script used 1:3, which worked at Q3_K_M (17.3 GB) but broke at 
 - Try MTP on everything that supports it, but expect the biggest wins on dense models and modest wins on small-active-param MoEs.
 - `--spec-draft-p-min 0.75` and `--spec-draft-n-max 3` worked identically well across both architectures. These are safe defaults for Qwen3.6-family MTP models.
 - `--reasoning-budget 4096` is a free win on any Qwen3.6 model with thinking enabled. Saves time, no measurable quality loss on normal tasks.
+
+---
+
+## Cross-model insights: heretic (llmfan) vs Unsloth 27B-MTP
+
+Both of these are Qwen3.6-27B dense models with MTP heads preserved in the GGUF. To be explicit: the heretic model (llmfan46/Qwen3.6-27B-uncensored-heretic-v2-Native-MTP-Preserved-GGUF) is an MTP model — the folder name says `MTP-Preserved`, the script uses `--spec-type draft-mtp`, and the server log confirms draft acceptance of 91.8%. The Unsloth model (unsloth/Qwen3.6-27B-MTP-GGUF) is also MTP. This is not a "with-MTP vs without-MTP" comparison — it is the same architecture with two different quant recipes and two different context configs on the same hardware.
+
+### Measured performance
+
+| Metric | Unsloth 27B (UD-Q4_K_XL, 80k, swa-full) | Heretic 27B (Q4_K_S, 153k, no swa-full) | Delta |
+|---|---|---|---|
+| Generation short (2048 tok) | 33.8 t/s | 36.7 t/s | +8.6% |
+| Generation long (8192 tok) | 35.0 t/s | 37.6 t/s | +7.4% |
+| Prompt processing (warm) | 206 t/s | 208 t/s | +1% |
+| MTP acceptance | 90.6% | 91.8% | +1.2pp |
+| Mean accepted draft length | 2.88 / 3 | 2.94 / 3 | +0.06 |
+| Per-position acceptance | 0.938 / 0.575 / 0.373 | 0.948 / 0.602 / 0.394 | Higher on all 3 |
+| Context window | 80k | 153k | +91% |
+| Idle VRAM headroom | 1.4 GiB | 1.6 GiB | +0.2 GiB |
+| Tensor split | 1,2 | 1,2 | Same |
+| KV cache quant | q4_0 / q4_0 | q4_0 / q4_0 | Same |
+| MTP draft flags | draft-mtp, n-max 3, p-min 0.75 | draft-mtp, n-max 3, p-min 0.75 | Same |
+
+The heretic 27B is strictly better hardware-efficiency on this rig: more tps, more context, better MTP acceptance, and slightly more headroom despite allocating nearly 2x the context window.
+
+### Why the heretic is faster despite more context
+
+Three things line up:
+
+1. **Smaller Wbytes per token.** The Unsloth release uses `UD-Q4_K_XL`, Unsloth's importance-weighted Q4 variant that packs extra precision into high-importance tensors at the cost of file size. Q4_K_S is the smaller, plainer Q4 recipe. Less weight data read per forward pass means less bandwidth pressure per token, which is exactly the bottleneck for a dense model. The XL tradeoff favors recall-heavy tasks; the K_S tradeoff favors throughput.
+
+2. **`--swa-full` is off on the heretic.** On the Unsloth config, `--swa-full` forces full-context KV for the sliding-window layers, adding roughly a GiB of KV that must be read every token to keep checkpoints valid. The heretic drops that entirely. The cost is the familiar SWA checkpoint invalidation warning on follow-up turns, but prompt processing is fast enough (208 t/s) that reprocessing a typical conversation prompt takes under a second.
+
+3. **MTP acceptance is higher, not lower.** Despite the plainer quant, the heretic's MTP heads accept drafts at 91.8% vs the Unsloth's 90.6%, with a longer mean accepted length (2.94 vs 2.88) and higher acceptance on every draft position. The heretic's abliteration recipe (v2) did not degrade the MTP heads — if anything, they sample slightly more reliably. This is the strongest evidence that the difference is the quant recipe, not the model itself.
+
+### The `--swa-full` trade,-specifically
+
+This is the cleanest case study in the repo of when to accept the SWA reprocessing penalty. Same architecture, same hardware, two configs:
+
+- Unsloth at 80k: `--swa-full` on, 1.4 GiB headroom, reprocessing eliminated, 35 t/s sustained
+- Heretic at 153k: `--swa-full` off, 1.6 GiB headroom, reprocessing on follow-up turns (cost ~0.2s at 208 t/s for a 47-token prompt, or ~10s for a 2000-token conversation), 37.6 t/s sustained
+
+The heretic spends that 1 GiB of SWA KV on 73k more context instead of checkpoint preservation. At your typical prompt sizes (under 100 tokens) the reprocessing cost is invisible. If you routinely chat with multi-thousand-token system prompts, the Unsloth config may feel smoother.
+
+### Why the heretic has more headroom at nearly 2x context
+
+The math: standard Q4_K_S is physically smaller than `UD-Q4_K_XL`. Unsloth's XL packs add size as they spread extra precision across important tensors. The fixed model weight savings exceed the additional KV cache cost of 73k extra context at q4_0, which lands roughly in the hundreds of MiB range. The net effect is more free VRAM at a larger context allocation.
+
+### When to pick which
+
+Pick the heretic 27B if:
+
+- You want maximum throughput per token on a dense 27B
+- You need context above 80k (the heretic comfortably hits 150k; the Unsloth hits the VRAM wall before then)
+- You want uncensored/abliterated output behavior
+- Your prompts are short enough that follow-up reprocessing is invisible
+
+Pick the Unsloth 27B if:
+
+- You want the best recall on long-context retrieval tasks (XL importance weighting)
+- You have long system prompts and want zero reprocessing latency on follow-up turns
+- You want the official Unsloth-blessed quant recipe
+
+### What generalizes
+
+- XL (importance-weighted) quants trade throughput and VRAM for recall. On bandwidth-bound dense models, that trade can cost measurable tps. On compute-bound MoEs, the tps cost is negligible.
+- `--swa-full` is not free. It buys UX at the cost of per-token bandwidth and VRAM. Skipping it is a valid choice when prompt processing is fast and context pressure is high.
+- The heretic v2 abliteration recipe did not degrade MTP acceptance in our measurements. Abliteration and MTP head quality can coexist.
+- The Qwen3.6-family MTP heads are robust across quant recipes. `--spec-draft-p-min 0.75` and `--spec-draft-n-max 3` remained optimal across Unsloth UD-Q4_K_XL and llmfan Q4_K_S without retuning.
+
+---
+
+## Long-term goals
+
+- **Upgrade the 3060 Ti to a 5070 Ti or 3090.** The 3060 Ti is the pipeline ceiling on every script in this repo. Moving to a card with more VRAM and higher memory bandwidth would re-open design space on tensor split, higher quants, and context above 150k. The ideal target is a 5070 Ti Super 24 GiB when it becomes available.
+- **Set up vLLM and evaluate whether it offers benefits over llama-server on this hardware.** The current scripts are tuned for llama.cpp specifically. vLLM has different scheduling, paged attention, and tensor-parallel assumptions that may or may not help on a two-card consumer rig.
+- **Adopt the sampler settings recommended by the distributors of each quantized model.** The scripts here currently use llama-server defaults for temperature, top-p, and top-k. The model distributors (Unsloth, llmfan) publish recommended sampler parameters per checkpoint, and running close to those settings rather than the defaults can measurably improve output quality without affecting tps.
 
 ---
 
