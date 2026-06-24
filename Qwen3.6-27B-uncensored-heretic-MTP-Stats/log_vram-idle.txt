@@ -1,5 +1,0 @@
-root@llamacpp:~# nvidia-smi --query-gpu=index,name,memory.used,memory.total,utilization.gpu,clocks.sm,clocks.mem,power.draw,temperature.gpu --format=csv
-index, name, memory.used [MiB], memory.total [MiB], utilization.gpu [%], clocks.current.sm [MHz], clocks.current.memory [MHz], power.draw [W], temperature.gpu
-0, NVIDIA GeForce RTX 5060 Ti, 15182 MiB, 16311 MiB, 0 %, 210 MHz, 405 MHz, 10.46 W, 35
-1, NVIDIA GeForce RTX 3060 Ti, 7283 MiB, 8192 MiB, 0 %, 210 MHz, 405 MHz, 19.89 W, 40
-root@llamacpp:~# 
