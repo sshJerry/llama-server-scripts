@@ -20,13 +20,13 @@ The recurring problem this repo solves: fitting large models with long context w
 Persistent mode and per-GPU power limits are applied at boot via cron:
 
 ```
-@reboot nvidia-smi -pm 1 && nvidia-smi -i 0 -pl 250 && nvidia-smi -i 1 -pl 170
+@reboot nvidia-smi -pm 1 && nvidia-smi -i 0 -pl 250 && nvidia-smi -i 1 -pl 155
 ```
 
 | GPU | Power limit |
 |-----|------------|
 | RTX 3090 (CUDA 0) | 250W |
-| RTX 5060 Ti (CUDA 1) | 170W |
+| RTX 5060 Ti (CUDA 1) | 155W |
 
 ---
 
