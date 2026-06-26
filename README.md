@@ -49,6 +49,61 @@ Two 35B MoE models running side-by-side — an agent (Ornith) and a world simula
 
 ---
 
+## Benchmarking
+
+[`bench.sh`](bench.sh) is the standard benchmarking script for this repo. It runs a warm-up, short and long generation benchmarks, a prompt-processing benchmark, captures VRAM at idle and under load, and extracts MTP draft stats and throughput decay from the server log — then writes a single summary JSON.
+
+**Requires `jq`.**
+
+### Usage
+
+Start the server with its output piped through `tee` so the benchmark script can extract draft stats and throughput decay:
+
+```
+./run-Ornith-1.0-35B.sh 2>&1 | tee /tmp/llama-server.log
+```
+
+Then run the benchmark:
+
+```
+./bench.sh <output_dir> <prefix> [port] [server_log]
+```
+
+| Argument | Default | Description |
+|----------|---------|-------------|
+| `output_dir` | *(required)* | Directory for result files (created if missing) |
+| `prefix` | *(required)* | Filename prefix, e.g. `bench` or `q4_ks` |
+| `port` | `8080` | llama-server API port |
+| `server_log` | `/tmp/llama-server.log` | Path to the tee'd server log |
+
+Example:
+
+```
+./bench.sh RTX3090-24GiB-RTX5060Ti-16GiB/Qwen3.6-27B-uncensored-heretic-MTP-Stats/default bench
+```
+
+### Output files
+
+| File | Contents |
+|------|----------|
+| `<prefix>_short.json` | 2048-token generation benchmark (`timings` + `usage`) |
+| `<prefix>_long.json` | 8192-token generation benchmark |
+| `<prefix>_prompt.json` | Prompt-processing benchmark (~4000 tokens in, 1 token out) |
+| `<prefix>_vram-idle.txt` | `nvidia-smi` at idle |
+| `<prefix>_vram-load.txt` | `nvidia-smi` during active generation |
+| `<prefix>_draft-stats.txt` | MTP draft acceptance lines from server log |
+| `<prefix>_decay.txt` | Throughput-over-time (`n_decoded` + `tg`) from server log |
+| `<prefix>_summary.json` | All key metrics in one file, also printed to terminal |
+
+The server log path must match between the `tee` command and `bench.sh`. If you use a different log path, pass it as the fourth argument:
+
+```
+./run-some-model.sh 2>&1 | tee ~/my-server.log
+./bench.sh stats/my-model default 8080 ~/my-server.log
+```
+
+---
+
 ## Long-term goals
 
 - **Evaluate higher quants on the 3090 + 5060 Ti.** The extra 16 GiB on the 3090 (vs. the retired 3060 Ti) re-opens design space on tensor split ratios, KV cache quality, and context windows above 150k.
