@@ -1,0 +1,73 @@
+{
+  "model": "Qwen3.6-35B-A3B-MTP-heretic-Q6K",
+  "short": {
+    "prompt_tps": 261.4399797185955,
+    "generation_tps": 115.4657588772759,
+    "prompt_tokens": 33,
+    "generated_tokens": 2048,
+    "requested_tokens": 2048,
+    "early_stop": null,
+    "draft": {
+      "acceptance_pct": 91.84,
+      "accepted": 1080,
+      "generated": 1176
+    }
+  },
+  "long": {
+    "prompt_tps": 484.7509720804068,
+    "generation_tps": 119.94570582659694,
+    "prompt_tokens": 47,
+    "generated_tokens": 8192,
+    "requested_tokens": 8192,
+    "early_stop": null,
+    "draft": {
+      "acceptance_pct": 90.42,
+      "accepted": 4409,
+      "generated": 4876
+    }
+  },
+  "prompt_processing": {
+    "tps": 3117.1965900869814,
+    "tokens": 5610
+  },
+  "vram_idle": [
+    {
+      "gpu": 0,
+      "name": " NVIDIA GeForce RTX 3090",
+      "used_mib": 22706,
+      "total_mib": 24576,
+      "free_mib": 1870,
+      "power_w": 50.9,
+      "temp_c": 49
+    },
+    {
+      "gpu": 1,
+      "name": " NVIDIA GeForce RTX 5060 Ti",
+      "used_mib": 14342,
+      "total_mib": 16311,
+      "free_mib": 1969,
+      "power_w": 10.4,
+      "temp_c": 36
+    }
+  ],
+  "vram_load": [
+    {
+      "gpu": 0,
+      "name": " NVIDIA GeForce RTX 3090",
+      "used_mib": 22744,
+      "total_mib": 24576,
+      "free_mib": 1832,
+      "power_w": 209.6,
+      "temp_c": 58
+    },
+    {
+      "gpu": 1,
+      "name": " NVIDIA GeForce RTX 5060 Ti",
+      "used_mib": 14384,
+      "total_mib": 16311,
+      "free_mib": 1927,
+      "power_w": 82.8,
+      "temp_c": 48
+    }
+  ]
+}
