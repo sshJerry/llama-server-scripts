@@ -1,0 +1,73 @@
+{
+  "model": "Ornith-35B-Q5KM",
+  "short": {
+    "prompt_tps": 385.72129882880984,
+    "generation_tps": 127.50409672281475,
+    "prompt_tokens": 33,
+    "generated_tokens": 2048,
+    "requested_tokens": 2048,
+    "early_stop": null,
+    "draft": {
+      "acceptance_pct": null,
+      "accepted": null,
+      "generated": null
+    }
+  },
+  "long": {
+    "prompt_tps": 642.620799037436,
+    "generation_tps": 124.32864711760827,
+    "prompt_tokens": 47,
+    "generated_tokens": 7125,
+    "requested_tokens": 8192,
+    "early_stop": "stopped at 7125/8192 tokens",
+    "draft": {
+      "acceptance_pct": null,
+      "accepted": null,
+      "generated": null
+    }
+  },
+  "prompt_processing": {
+    "tps": 3893.2027178857625,
+    "tokens": 5610
+  },
+  "vram_idle": [
+    {
+      "gpu": 0,
+      "name": " NVIDIA GeForce RTX 3090",
+      "used_mib": 19700,
+      "total_mib": 24576,
+      "free_mib": 4876,
+      "power_w": 40.4,
+      "temp_c": 45
+    },
+    {
+      "gpu": 1,
+      "name": " NVIDIA GeForce RTX 5060 Ti",
+      "used_mib": 11466,
+      "total_mib": 16311,
+      "free_mib": 4845,
+      "power_w": 13.2,
+      "temp_c": 36
+    }
+  ],
+  "vram_load": [
+    {
+      "gpu": 0,
+      "name": " NVIDIA GeForce RTX 3090",
+      "used_mib": 19708,
+      "total_mib": 24576,
+      "free_mib": 4868,
+      "power_w": 248.5,
+      "temp_c": 59
+    },
+    {
+      "gpu": 1,
+      "name": " NVIDIA GeForce RTX 5060 Ti",
+      "used_mib": 11472,
+      "total_mib": 16311,
+      "free_mib": 4839,
+      "power_w": 86.6,
+      "temp_c": 48
+    }
+  ]
+}

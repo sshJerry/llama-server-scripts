@@ -1,0 +1,1 @@
+(model has no MTP heads — no draft stats in log)
