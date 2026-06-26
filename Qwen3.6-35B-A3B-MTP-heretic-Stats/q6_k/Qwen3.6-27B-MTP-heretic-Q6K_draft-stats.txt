@@ -1,2 +1,0 @@
-9.24.454.476 I slot print_timing: id  0 | task 983 | draft acceptance = 0.91927 ( 3792 accepted /  4125 generated), mean acceptance length =  2.90, acceptance rate per position = (0.940, 0.581, 0.381)
-9.24.454.488 I statistics        draft-mtp: #calls(b,g,a) =    4   4037   2640, #gen drafts =   2640, #acc drafts =  2481, #gen tokens =   5437, #acc tokens =  4992, #mean acc len = 2.89, #acc rate/pos = (0.940, 0.577, 0.374), dur(b,g,a) = 0.006, 32243.761, 3.548 ms

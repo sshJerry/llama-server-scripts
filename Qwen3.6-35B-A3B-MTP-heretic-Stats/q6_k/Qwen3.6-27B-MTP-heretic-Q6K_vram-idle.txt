@@ -1,3 +1,0 @@
-index, name, memory.used [MiB], memory.total [MiB], utilization.gpu [%], clocks.current.sm [MHz], clocks.current.memory [MHz], power.draw [W], temperature.gpu
-0, NVIDIA GeForce RTX 3090, 20552 MiB, 24576 MiB, 25 %, 1860 MHz, 9501 MHz, 58.01 W, 48
-1, NVIDIA GeForce RTX 5060 Ti, 13610 MiB, 16311 MiB, 0 %, 210 MHz, 405 MHz, 10.40 W, 35
