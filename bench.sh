@@ -239,11 +239,9 @@ parse_nvsmi() {
   }' "$1" | jq -s '.'
 }
 
-VRAM_IDLE_JSON="${VRAM_IDLE_JSON:-[]}"
 VRAM_IDLE_JSON=$(parse_nvsmi "${OUTPUT_DIR}/${PREFIX}_vram-idle.txt")
 VRAM_IDLE_JSON="${VRAM_IDLE_JSON:-[]}"
 
-VRAM_LOAD_JSON="${VRAM_LOAD_JSON:-[]}"
 VRAM_LOAD_JSON=$(parse_nvsmi "${OUTPUT_DIR}/${PREFIX}_vram-load.txt")
 VRAM_LOAD_JSON="${VRAM_LOAD_JSON:-[]}"
 
