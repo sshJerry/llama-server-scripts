@@ -226,8 +226,6 @@ Ornith is faster across the board despite having no speculative decoding. Three 
 
 ### Cross-model: Hardware bottlenecks
 
-Both oracles independently identified the same limiting factor across all three models:
-
 **The RTX 5060 Ti is the throughput ceiling.** Its 128-bit memory bus, 16 GiB capacity, and PCIe 4.0 x4 link make it the slower card in every tensor-parallel configuration. The 3090 sits partially idle (38-54% utilization depending on the model), stalling on PCIe transfers and waiting for the 5060 Ti to finish its layer slices. This was also true on the old rig — the 3060 Ti was the bottleneck then, and the upgrade to a 3090 bought VRAM headroom and context length but didn't shift the tps ceiling because the 5060 Ti didn't change.
 
 **What would unlock the 3090:**
