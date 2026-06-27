@@ -5,7 +5,7 @@ CUDA_VISIBLE_DEVICES=GPU-00d31b08-e71c-a0ad-7f0f-62ee482cda42,GPU-d2c7640f-db52-
   -md /models/Models/HauhauCS/Gemma4-31B-QAT-Uncensored-HauhauCS-Balanced-MTP/mtp-gemma-4-31B-it.gguf \
   --mmproj /models/Models/HauhauCS/Gemma4-31B-QAT-Uncensored-HauhauCS-Balanced-MTP/mmproj-Gemma4-31B-QAT-Uncensored-HauhauCS-Balanced-BF16.gguf \
   --n-gpu-layers 999 \
-  --tensor-split 7,2 \
+  --tensor-split 6,3 \
   --flash-attn on \
   -c 262144 \
   -b 4096 \
@@ -17,11 +17,11 @@ CUDA_VISIBLE_DEVICES=GPU-00d31b08-e71c-a0ad-7f0f-62ee482cda42,GPU-d2c7640f-db52-
   --cache-type-k q4_0 \
   --cache-type-v q4_0 \
   --spec-type draft-mtp \
-  --spec-draft-n-max 3 \
+  --spec-draft-n-max 4 \
   --spec-draft-n-min 0 \
   --spec-draft-p-min 0.75 \
   --temp 0.6 \
   --top-k 64 \
   --top-p 0.9 \
   --min-p 0.05 \
-  --repeat-penalty 1.1
+  --repeat-penalty 1.1 \
