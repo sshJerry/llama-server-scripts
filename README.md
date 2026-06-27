@@ -239,6 +239,14 @@ Both oracles independently identified the same limiting factor across all three 
 
 ---
 
+## Agent simulation
+
+### [`ornith-agentworld-tandem/`](ornith-agentworld-tandem/)
+
+Two 35B MoE models running side-by-side — an agent (Ornith) and a world simulator (AgentWorld) — in an autonomous task loop across seven domains: terminal, swe, web, os, android, mcp, and search.
+
+---
+
 ## Legacy hardware
 
 ### [`RTX3060Ti-8GiB-RTX5060Ti-16GiB/`](RTX3060Ti-8GiB-RTX5060Ti-16GiB/)
@@ -249,10 +257,6 @@ Models covered:
 - Qwen3.6-27B-MTP (Unsloth UD-Q4_K_XL)
 - Qwen3.6-27B-uncensored-heretic-MTP (llmfan Q4_K_S)
 - Qwen3.6-35B-A3B-uncensored-heretic-MTP (llmfan Q4_K_S)
-
-### [`ornith-agentworld-tandem/`](ornith-agentworld-tandem/)
-
-Two 35B MoE models running side-by-side — an agent (Ornith) and a world simulator (AgentWorld) — in an autonomous task loop across seven domains: terminal, swe, web, os, android, mcp, and search.
 
 ---
 
