@@ -40,4 +40,4 @@ CUDA_VISIBLE_DEVICES=GPU-00d31b08-e71c-a0ad-7f0f-62ee482cda42,GPU-d2c7640f-db52-
   --spec-draft-n-max 3 \
   --spec-draft-n-min 0 \
   --spec-draft-p-min 0.75 \
-  --reasoning-budget 6144 \
+  --reasoning-budget 32768 \
