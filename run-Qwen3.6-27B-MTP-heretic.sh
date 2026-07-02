@@ -34,8 +34,9 @@ CUDA_VISIBLE_DEVICES=GPU-00d31b08-e71c-a0ad-7f0f-62ee482cda42,GPU-d2c7640f-db52-
   --top-p 0.95 \
   --host 0.0.0.0 \
   --port 8080 \
-  --cache-type-k q4_0 \
-  --cache-type-v q4_0 \
+  --no-mmap \
+  --cache-type-k q8_0 \
+  --cache-type-v q8_0 \
   --spec-type draft-mtp \
   --spec-draft-n-max 3 \
   --spec-draft-n-min 0 \
