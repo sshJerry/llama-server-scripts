@@ -27,8 +27,6 @@ CUDA_VISIBLE_DEVICES=GPU-00d31b08-e71c-a0ad-7f0f-62ee482cda42,GPU-d2c7640f-db52-
 
 /root/llama.cpp/build/bin/llama-server \
   -m /models/Models/unsloth/Qwen3.5-122B-A10B-MTP-GGUF/Qwen3.5-122B-A10B-UD-IQ3_XXS.gguf \
-  --n-gpu-layers 999 \
-  --tensor-split 6,3 \
   --flash-attn on \
   -c 262144 \
   -b 4096 \
