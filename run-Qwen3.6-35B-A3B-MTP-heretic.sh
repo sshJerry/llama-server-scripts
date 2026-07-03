@@ -7,12 +7,13 @@ CUDA_VISIBLE_DEVICES=GPU-00d31b08-e71c-a0ad-7f0f-62ee482cda42,GPU-d2c7640f-db52-
   --tensor-split 5,3 \
   --flash-attn on \
   -c 262144 \
-  -b 4096 \
-  -ub 512 \
+  -b 512 \
+  -ub 128 \
   -np 1 \
   --jinja \
   --host 0.0.0.0 \
   --port 8080 \
+  --no-mmap \
   --cache-type-k q8_0 \
   --cache-type-v q8_0 \
   --spec-type draft-mtp \
