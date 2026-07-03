@@ -25,8 +25,8 @@ CUDA_VISIBLE_DEVICES=GPU-00d31b08-e71c-a0ad-7f0f-62ee482cda42,GPU-d2c7640f-db52-
   --tensor-split 6,3 \
   --flash-attn on \
   -c 262144 \
-  -b 4096 \
-  -ub 512 \
+  -b 512 \
+  -ub 128 \
   -np 1 \
   --jinja \
   --temp 0.6 \
