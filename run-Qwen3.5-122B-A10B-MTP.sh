@@ -29,8 +29,8 @@ CUDA_VISIBLE_DEVICES=GPU-00d31b08-e71c-a0ad-7f0f-62ee482cda42,GPU-d2c7640f-db52-
   -m /models/Models/unsloth/Qwen3.5-122B-A10B-MTP-GGUF/Qwen3.5-122B-A10B-UD-IQ3_XXS.gguf \
   --flash-attn on \
   -c 262144 \
-  -b 4096 \
-  -ub 512 \
+  -b 512 \
+  -ub 128 \
   -np 1 \
   --jinja \
   --temp 0.6 \
