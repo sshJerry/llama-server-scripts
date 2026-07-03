@@ -1,0 +1,26 @@
+/root/llama.cpp/build/bin/llama-server \
+  -m /models/Models/PiehSoft/Qwen3.6-40B-Deckard-MTP/Qwen3.6-40B-Deckard-MTP-Q5_K_M.gguf \
+  --mmproj /models/Models/llmfan46/Qwen3.6-27B-uncensored-heretic-v2-Native-MTP-Preserved-GGUF/Qwen3.6-27B-mmproj-BF16.gguf \
+  --n-gpu-layers 999 \
+  --tensor-split 6,3 \
+  --flash-attn on \
+  -c 200000 \
+  -b 512 \
+  -ub 128 \
+  -np 1 \
+  --jinja \
+  --temp 0.6 \
+  --top-k 20 \
+  --top-p 0.95 \
+  --host 0.0.0.0 \
+  --port 8080 \
+  --no-mmap \
+  --kv-unified \
+  --cache-type-k q4_0 \
+  --cache-type-v q4_0 \
+  --spec-type draft-mtp \
+  --spec-draft-n-max 2 \
+  --spec-draft-n-min 0 \
+  --spec-draft-p-min 0.75 \
+  --reasoning-budget 32768 \
+  --metrics \
