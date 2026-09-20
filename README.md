@@ -12,7 +12,7 @@ All scripts in this repo were tuned on the same two-GPU rig, running llama.cpp i
 - NVIDIA RTX 3090 (24 GiB, CUDA 0, compute 8.6) — 265 W power cap
 - NVIDIA RTX 3090 (24 GiB, CUDA 1, compute 8.6) — 265 W power cap
 - Interconnect: PCIe only. No NVLink, no P2P on the stock driver, so every script runs `NCCL_P2P_DISABLE=1` + `--disable-custom-all-reduce`
-- LXC container on Proxmox VE (kernel 7.0.14-4-pve): 10 cores, 115 GiB RAM; GPUs pinned to host cores 22–31 (NUMA 0)
+- LXC container on Proxmox VE (kernel 7.0.14-4-pve): 10 cores, 115 GiB RAM; GPUs pinned to host cores 22–31 (NUMA 0) for vLLM instances. llamacpp instances are pinned to host cores 0-21. 
 - Boot disk: 34 GiB LXC root — deliberately small; nothing model-related lives on it
 - `/models` — NFS mount from the LAN media server
 - Debian 13 (trixie), NVIDIA driver 595.84, CUDA 13.2 (system toolkit at `/usr/local/cuda-13.2`)
