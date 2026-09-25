@@ -99,16 +99,16 @@ repeated 12.5K prompt served from cache); with the drafter on, reuse snaps to
 
 # Qwen3.8-27B INT8-W8A8 12 Minute Agentic Performance
 
-Live opencode session: 4 subagents fanned out at once against the Prefill tier
+Live opencode session: 4 subagents against the Prefill tier
 (`run-Qwen3.8-27B-INT8-W8A8-MTP.sh`, `max-num-seqs 2`). Window 05:30:10 to
 05:41:20, sampled every 10s.
 
-- The 4-way fan-out hit the `max-num-seqs 2` cap. The engine held 2 running and queued the rest (`Waiting: 1`) from 05:30:50 to 05:37:50.
-- Prefix cache carried the prefill load. Hit rate stayed 87.4% to 79.5% because every subagent and the main session share one system prompt and tool schema. Prefill spikes reached 3.5K to 8.2K tok/s on a 262K context.
+- The fan-out hit the `max-num-seqs 2` cap. The engine held 2 running from 05:30:30 to 05:38:20, with a third request queued (`Waiting: 1`) intermittently from 05:30:50 to 05:37:40, so queued turns interleaved instead of running in parallel.
+- Prefix cache carried the prefill load. Hit rate stayed 87.4% to 79.5% because every subagent and the main session share one system prompt and tool schema. Prefill spikes reached 2.8K to 8.2K tok/s on a 262K context.
 - KV cache was the binding constraint. It peaked at 95.6% at 05:37:10 with two long-context streams live. A third stream would have hit eviction or OOM. The 2-seq cap kept the run safe.
-- Chunked prefill stalls decode. The 1 to 2 tok/s dips (05:32:30, 05:33:20, 05:35:00, 05:37:00, 05:38:00) are running streams pausing while a new subagent prompt prefills in 4096-token chunks.
-- Two-stream decode averaged 140 to 177 tok/s. Solo decode was 49 to 97 tok/s, in line with the 65 to 72 prefill-tier benchmark.
-- MTP drafting added roughly 1.5x. Mean acceptance length was 3.0 to 3.8 of 4 tokens.
+- Chunked prefill stalls decode: decode drops to 1 to 5 tok/s in clusters around the prefill spikes, consistent with the running streams yielding to incoming subagent prompts processed in 4096-token chunks.
+- Two-stream decode peaked at 177 tok/s, holding 140 to 177 tok/s on the cleanest plateaus. Solo decode ran 49 to 98 tok/s (one 147 tok/s sample straddled a stream handoff), bracketing the 65 to 72 prefill-tier benchmark.
+- MTP drafting (n=3) held a mean acceptance length of 2.0 to 4.0 of 4 tokens.
 - The run ended clean. KV fell to 0% at 05:41:10 with no dropped requests.
 
 | Time | Prefill (tok/s) | Decode (tok/s) | Run/Wait | KV cache (%) | dKV (pts) | Prefix hit (%) | MTP accept |
