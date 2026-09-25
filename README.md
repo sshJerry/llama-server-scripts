@@ -182,4 +182,4 @@ Live opencode session: 4 subagents fanned out at once against the Prefill tier
 | 05:41:10 | 0.0 | 6.9 | 0/0 | 0.0 | -38.7 | 79.5 | 3.04 |
 | 05:41:20 | 0.0 | 0.0 | 0/0 | 0.0 | 0.0 | 79.5 | n/a |
 
-Raw log: [Qwen3.8-27B-Benchmarks/INT8-W8A16-12-Minute-Agentic-Session/vLLM-API-Server.log](Qwen3.8-27B-Benchmarks/INT8-W8A16-12-Minute-Agentic-Session/vLLM-API-Server.log)
+Raw log: [Qwen3.8-27B-Benchmarks/INT8-W8A8-12-Minute-Agentic-Session/vLLM-API-Server.log](Qwen3.8-27B-Benchmarks/INT8-W8A8-12-Minute-Agentic-Session/vLLM-API-Server.log)
