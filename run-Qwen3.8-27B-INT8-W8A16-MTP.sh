@@ -38,7 +38,7 @@ trap cleanup INT TERM
   --dtype bfloat16 \
   --performance-mode balanced \
   --max-model-len 262144 \
-  --gpu-memory-utilization 0.90 \
+  --gpu-memory-utilization 0.92 \
   --max-num-seqs 2 \
   --max-num-batched-tokens 8192 \
   --kv-cache-dtype fp8_e4m3 \
