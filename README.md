@@ -111,6 +111,9 @@ Live opencode session: 4 subagents against the Prefill tier
 - MTP drafting (n=3) held a mean acceptance length of 2.0 to 4.0 of 4 tokens.
 - The run ended clean. KV fell to 0% at 05:41:10 with no dropped requests.
 
+<details>
+<summary>Full benchmark reports</summary>
+
 | Time | Prefill (tok/s) | Decode (tok/s) | Run/Wait | KV cache (%) | dKV (pts) | Prefix hit (%) | MTP accept |
 |---|---|---|---|---|---|---|---|
 | 05:30:10 | 228.3 | 49.0 | 1/0 | 16.0 | n/a | 87.4 | 2.59 |
@@ -183,3 +186,9 @@ Live opencode session: 4 subagents against the Prefill tier
 | 05:41:20 | 0.0 | 0.0 | 0/0 | 0.0 | 0.0 | 79.5 | n/a |
 
 Raw log: [Qwen3.8-27B-Benchmarks/INT8-W8A8-12-Minute-Agentic-Session/vLLM-API-Server.log](Qwen3.8-27B-Benchmarks/INT8-W8A8-12-Minute-Agentic-Session/vLLM-API-Server.log)
+
+</details>
+
+# Qwen3.8-Flash-Next-W4A16-FP8PLE
+
+[https://github.com/sshJerry/llama-server-scripts/tree/master/Qwen3.8-Flash-Next-Installation-Benchmarks](https://github.com/sshJerry/llama-server-scripts/tree/master/Qwen3.8-Flash-Next-Installation-Benchmarks)
